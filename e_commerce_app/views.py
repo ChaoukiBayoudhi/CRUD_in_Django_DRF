@@ -42,8 +42,8 @@ from django.shortcuts import render
 #aggregate() : permet de retourner le resultat d'une fonction d'agregation (min, max, avg, sum)
 #selectioner le maximum et le minimum des prix des produits
 #result=Product.objects.aggregate(Max('price'),Min('price'))
-from .models import Product, Client
-from .serializers import ProductSerializer, ClientSerializer
+from .models import Product, Client,Command
+from .serializers import ProductSerializer, ClientSerializer, CommandSerializer
 from rest_framework import viewsets
 class ProductViewSet(viewsets.ModelViewSet):
     #par defaut, toutes les methodes HTTP seront implementées(POST, GET, PUT, DELETE, PATCH) 
@@ -53,5 +53,10 @@ class ProductViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset=Client.objects.all()
     serializer_class=ClientSerializer
+    #without http_method_names, methods GET, POST, PUT, PATCH and DELETE will be implemented
     #personaliser le traitement, en precisant les methodes HTTP à implementer
-    http_method_names=['get','post','delete']
+    #http_method_names=['get','post','delete']
+
+class CommandViewSet(viewsets.ModelViewSet):
+    queryset=Command.objects.all()
+    serializer_class=CommandSerializer
