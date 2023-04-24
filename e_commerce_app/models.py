@@ -49,19 +49,21 @@ class Product(models.Model):
         #return 'label = ',self.label,'price = ',self.price,'stock = ',self.stock
         #return f'label = {self.label} price = {self.price} stock = {self.stock}'
         #return 'label = {} price = {} stock = {}'.format(self.label,self.price,self.stock)
-        return 'label = %s price = %s stock = %s'%(self.label,self.price,self.stock)
+        #return 'label = %s price = %s stock = %s'%(self.label,self.price,self.stock)
+        return f'label = {self.label}'
 class Client(User):
     lastName = models.CharField(max_length=50,default='')
     #clientType=models.CharField(max_length=50,choices=[('NORMAL','normal customer'),('LOYAL','loyal customer'),('VIP','Very Important Customer')],default='NORMAL')
     #or we can use the enumeration
     clientType=models.CharField(max_length=50,choices=ClientType.choices,default=ClientType.normal)
-    address = models.OneToOneField(Address,on_delete=models.CASCADE)
+    address = models.OneToOneField(Address,on_delete=models.CASCADE,null=True,blank=True)
     clientProducts=models.ManyToManyField(Product,through='Command',through_fields=('client','product'))
     class Meta:
         db_table = 'clients'
         ordering=['lastName','name']
     def __str__(self):
-        return super().__str__()+f' lastName = {self.lastName} clientType = {self.clientType}'
+       return f' lastName = {self.lastName}'
+        #return super().__str__()+f' lastName = {self.lastName} clientType = {self.clientType}'
 class Provider(User):
     site_url=models.URLField(max_length=200,default='')
     address=models.OneToOneField(Address,on_delete=models.CASCADE,null=True,blank=True)
